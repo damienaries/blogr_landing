@@ -43,6 +43,8 @@ const StyledHero = styled.div`
     .hero-title {
         font-size: 4rem;
         font-weight: 600;
+        max-width: 90%;
+        margin-top: 5rem;
     }
 
     .hero-subtitle {
@@ -97,8 +99,12 @@ const StyledHero = styled.div`
             font-size: 2.5rem;
         }
 
+        .hero-subtitle {
+            font-size: 85%;
+        }
+
         .hero-content {
-            width: 85%;
+            width: 90%;
         }
     }
 `

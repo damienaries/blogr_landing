@@ -1,9 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Logo from '../assets/images/logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useWindowDimensions from '../hooks/useWindowDimensions';
+
+/*************************************
+@TODO
+    - use window width hook to display full navbar or hamburger
+    - create open / close states with different content for each dropdown
+    - create mobile menu
+    - publish to Front End Mentor && update live app
+    - hide/shrink hero subtitle on small screens
+****************************************/
+
+/* 
+    if window width < ~800 display burger
+    if burger closed nothing
+    if burger clicked => open display <MobileNav />
+ */
+
+/*
+    Dropdowns
+        for each create open-close state && toggle func    
+*/
 
 export default function Navbar() {
+    const { width } = useWindowDimensions();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [productOpen, setProductOpen] = useState(false);
+    const [companyOpen, setCompanyOpen] = useState(false);
+    const [connectOpen, setConnectOpen] = useState(false);
+
+
+    // toggle mobile menu state
+    const toggleMobile = () => {
+        setMobileOpen(!mobileOpen);
+    }
+
+    // toggle sub menus
+    const toggleSubMenu = (e) => {
+        console.log(e.target.innerText);
+    }
+ 
     return (
         <Navigation>
             <div className="nav-left">
@@ -12,45 +50,130 @@ export default function Navbar() {
                 alt="logo"
                 src={Logo}
                 />
-                <ul className="nav-list">
-                <li >
-                    <span className="nav-list-item">
-                        Product
-                        <FontAwesomeIcon 
-                            icon="chevron-down"
-                            className="nav-list-item-icon"/>
-                    </span>
-                </li>
-                <li >
-                    <span className="nav-list-item">
-                        Company
-                        <FontAwesomeIcon 
-                            icon="chevron-down"
-                            className="nav-list-item-icon"/>
-                    </span>
-                </li>
-                <li >
-                    <span className="nav-list-item">
-                        Connect
-                        <FontAwesomeIcon 
-                            icon="chevron-down"
-                            className="nav-list-item-icon"/>
-                    </span>
-                </li>
+                {/* Left side either list or empty if mobile */}
+                { width > 768 ? (
+                    <ul className="nav-list">
+                        <li >
+                            <span className="nav-list-item">
+                                Product
+                                <FontAwesomeIcon 
+                                    icon="chevron-down"
+                                    className="nav-list-item-icon"/>
+                            </span>
+                        </li>
+                        <li >
+                            <span className="nav-list-item">
+                                Company
+                                <FontAwesomeIcon 
+                                    icon="chevron-down"
+                                    className="nav-list-item-icon"/>
+                            </span>
+                        </li>
+                        <li >
+                            <span className="nav-list-item">
+                                Connect
+                                <FontAwesomeIcon 
+                                    icon="chevron-down"
+                                    className="nav-list-item-icon"/>
+                            </span>
+                        </li>
+                    </ul>
+                ) : null }
+            </div>
                 
-            </ul>
-            </div>
+            {/* Right side either buttons or mobile menu icons */}
+            { 
+                width > 768 ? (
+                    <div className="nav-cta">
+                    <div className="nav-cta-item">
+                            Login
+                        </div>
+                        <div className="nav-cta-item signup">
+                            Sign up
+                        </div>
+                    </div>
+                ) : !mobileOpen ? (
+                        <FontAwesomeIcon 
+                            icon="bars" 
+                            className="mobile-menu-icon hamburger"
+                            onClick={toggleMobile}
+                        />
+                    ) : (
+                        <FontAwesomeIcon 
+                            icon="times" 
+                            className="mobile-menu-icon close"
+                            onClick={toggleMobile}     
+                        />
+                    ) 
+            }                        
+                        
+                    {mobileOpen ? (
+                            <div className="mobile-menu">
+                                <ul className="mobile-menu-list">
+                                <li onClick={e => toggleSubMenu(e)}>
+                                    <span className="mobile-menu-item">
+                                        Product
+                                        <FontAwesomeIcon 
+                                            icon="chevron-down"
+                                            className="mobile-menu-chevron"/>
+                                    </span>
+                                    {!productOpen ? null : (
+                                        <ul className="submenu-mobile">
+                                            <li>Overview</li>
+                                            <li>Pricing</li>
+                                            <li>Marketplace</li>
+                                            <li>Features</li>
+                                            <li>Intergrations</li>
+                                        </ul>
+                                    )}
 
-            <div className="nav-cta">
-                <div className="nav-cta-item">
-                    Login
-                </div>
-                <div className="nav-cta-item signup">
-                    Sign up
-                </div>
-            </div>
-            
+                                </li>
+                                <li onClick={e => toggleSubMenu(e)}>
+                                    <span className="mobile-menu-item">
+                                        Company
+                                        <FontAwesomeIcon 
+                                            icon="chevron-down"
+                                            className="mobile-menu-chevron"/>
+                                    </span>
+                                    {!companyOpen ? null : (
+                                        <ul className="submenu-mobile">
+                                            <li>About</li>
+                                            <li>Team</li>
+                                            <li>Blog</li>
+                                            <li>Careers</li>
+                                        </ul>
+                                    )}
 
+                                </li>
+                                <li onClick={e => toggleSubMenu(e)}>
+                                    <span className="mobile-menu-item">
+                                        Connect
+                                        <FontAwesomeIcon 
+                                            icon="chevron-down"
+                                            className="mobile-menu-chevron"/>
+                                    </span>
+                                    {!connectOpen ? null : (
+                                        <ul className="submenu-mobile">
+                                            <li>Contact</li>
+                                            <li>Newsletter</li>
+                                            <li>LinkedIn</li>
+                                        </ul>
+                                    )}
+
+                                </li>
+                            </ul>
+                            
+                            <div className="nav-cta-mobile">
+                                <div className="nav-cta-item">
+                                    Login
+                                </div>
+                                <div className="nav-cta-item signup">
+                                    Sign up
+                                </div>
+                            </div>
+                        </div>
+
+                        ) : null }
         </Navigation>
     )
 
@@ -75,10 +198,6 @@ const Navigation = styled.nav`
         align-items: center;
         padding: .5rem;
 
-
-        .nav-logo {
-            width: 30%;
-        }
 
         .nav-list {
             display: flex;
@@ -144,6 +263,44 @@ const Navigation = styled.nav`
         }
     }
 
+
+    .mobile-menu {
+        background-color: #fff;
+        height: fit-content;
+        color: var(--title-primary);
+        text-align: center;
+        position: absolute;
+        width: 85%;
+        margin: 4rem auto;
+
+        &-list {
+            list-style: none;
+            padding: 1rem;
+        }
+
+        &-item {
+
+        }
+
+        &-icon {
+            position: fixed;
+            font-size: 2rem;
+            color: #fff;
+            font-weight: 300;
+            right: 2rem;
+
+            &.hamburger {
+
+            }
+
+            &.close {
+
+            }
+
+
+        }
+    }
+
     @media only screen and (max-width: 900px) {
         width: 95%;
 
@@ -160,8 +317,6 @@ const Navigation = styled.nav`
                 }
             }
         }
-
-        
     }
     
 `

@@ -7,13 +7,13 @@ import Desktop from './components/Desktop';
 import Footer from './components/Footer';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import styled from '@emotion/styled';
 import './App.css';
 
 // Create Globally accesible icon library
-library.add(faChevronDown);
+library.add(faChevronDown, faBars, faTimes);
 
 export default function App() {
   return (
