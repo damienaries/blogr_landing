@@ -6,23 +6,9 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 
 /*************************************
 @TODO
-    - use window width hook to display full navbar or hamburger
-    - create open / close states with different content for each dropdown
-    - create mobile menu
     - publish to Front End Mentor && update live app
-    - hide/shrink hero subtitle on small screens
+    - add dropdowns to full screen nav
 ****************************************/
-
-/* 
-    if window width < ~800 display burger
-    if burger closed nothing
-    if burger clicked => open display <MobileNav />
- */
-
-/*
-    Dropdowns
-        for each create open-close state && toggle func    
-*/
 
 export default function Navbar() {
     const { width } = useWindowDimensions();
@@ -39,7 +25,15 @@ export default function Navbar() {
 
     // toggle sub menus
     const toggleSubMenu = (e) => {
-        console.log(e.target.innerText);
+        console.log(e.target.innerText)
+        if (e.target.innerText === 'Product') {
+            setProductOpen(!productOpen);
+            
+        } else if (e.target.innerText === 'Company') {
+            setCompanyOpen(!companyOpen);
+        } else {
+            setConnectOpen(!connectOpen);
+        }
     }
  
     return (
@@ -51,34 +45,67 @@ export default function Navbar() {
                 src={Logo}
                 />
                 {/* Left side either list or empty if mobile */}
-                { width > 768 ? (
+                { width > 768 && (
                     <ul className="nav-list">
-                        <li >
+                        <li onClick={e => toggleSubMenu(e)}>
                             <span className="nav-list-item">
                                 Product
                                 <FontAwesomeIcon 
                                     icon="chevron-down"
-                                    className="nav-list-item-icon"/>
+                                    className="nav-list-item-icon"
+                                    style={{
+                                        transform: productOpen ? 'rotateX(180deg)' : ''
+                                    }}/>
                             </span>
+                            {productOpen && (
+                                <ul className="submenu">
+                                    <li className="submenu-item">Overview</li>
+                                    <li className="submenu-item">Pricing</li>
+                                    <li className="submenu-item">Marketplace</li>
+                                    <li className="submenu-item">Features</li>
+                                    <li className="submenu-item">Intergrations</li>
+                                </ul>
+                            )}
                         </li>
-                        <li >
+                        <li onClick={e => toggleSubMenu(e)}>
                             <span className="nav-list-item">
                                 Company
                                 <FontAwesomeIcon 
                                     icon="chevron-down"
-                                    className="nav-list-item-icon"/>
+                                    className="nav-list-item-icon"
+                                    style={{
+                                        transform: companyOpen ? 'rotateX(180deg)' : ''
+                                    }}/>
                             </span>
+                            {companyOpen && (
+                                <ul className="submenu">
+                                    <li className="submenu-item">About</li>
+                                    <li className="submenu-item">Team</li>
+                                    <li className="submenu-item">Blog</li>
+                                    <li className="submenu-item">Careers</li>
+                                </ul>
+                            )}
                         </li>
-                        <li >
+                        <li onClick={e => toggleSubMenu(e)}>
                             <span className="nav-list-item">
                                 Connect
                                 <FontAwesomeIcon 
                                     icon="chevron-down"
-                                    className="nav-list-item-icon"/>
+                                    className="nav-list-item-icon"
+                                    style={{
+                                        transform: connectOpen ? 'rotateX(180deg)' : ''
+                                    }}/>
                             </span>
+                            {connectOpen && (
+                                <ul className="submenu">
+                                    <li className="submenu-item">Contact</li>
+                                    <li className="submenu-item">Newsletter</li>
+                                    <li className="submenu-item">LinkedIn</li>
+                                </ul>
+                            )}
                         </li>
                     </ul>
-                ) : null }
+                )}
             </div>
                 
             {/* Right side either buttons or mobile menu icons */}
@@ -107,56 +134,74 @@ export default function Navbar() {
                     ) 
             }                        
                         
-                    {mobileOpen ? (
+                    {mobileOpen && (
                             <div className="mobile-menu">
                                 <ul className="mobile-menu-list">
-                                <li onClick={e => toggleSubMenu(e)}>
-                                    <span className="mobile-menu-item">
+                                <li 
+                                    className="mobile-menu-item" 
+                                    onClick={e => toggleSubMenu(e)}
+                                    >
+                                    <span>
                                         Product
                                         <FontAwesomeIcon 
                                             icon="chevron-down"
-                                            className="mobile-menu-chevron"/>
+                                            className="mobile-menu-chevron"
+                                            style={{
+                                                transform: productOpen ? 'rotateX(180deg)' : ''
+                                            }}/>
                                     </span>
-                                    {!productOpen ? null : (
+                                    {productOpen && (
                                         <ul className="submenu-mobile">
-                                            <li>Overview</li>
-                                            <li>Pricing</li>
-                                            <li>Marketplace</li>
-                                            <li>Features</li>
-                                            <li>Intergrations</li>
+                                            <li className="submenu-mobile-item">Overview</li>
+                                            <li className="submenu-mobile-item">Pricing</li>
+                                            <li className="submenu-mobile-item">Marketplace</li>
+                                            <li className="submenu-mobile-item">Features</li>
+                                            <li className="submenu-mobile-item">Intergrations</li>
                                         </ul>
                                     )}
 
                                 </li>
-                                <li onClick={e => toggleSubMenu(e)}>
-                                    <span className="mobile-menu-item">
+                                <li 
+                                    className="mobile-menu-item"
+                                    onClick={e => toggleSubMenu(e)}
+                                    >
+                                    <span>
                                         Company
                                         <FontAwesomeIcon 
                                             icon="chevron-down"
-                                            className="mobile-menu-chevron"/>
+                                            className="mobile-menu-chevron"
+                                            style={{
+                                                transform: companyOpen ? 'rotateX(180deg)' : ''
+                                            }}/>
                                     </span>
-                                    {!companyOpen ? null : (
+                                    {companyOpen && (
                                         <ul className="submenu-mobile">
-                                            <li>About</li>
-                                            <li>Team</li>
-                                            <li>Blog</li>
-                                            <li>Careers</li>
+                                            <li className="submenu-mobile-item">About</li>
+                                            <li className="submenu-mobile-item">Team</li>
+                                            <li className="submenu-mobile-item">Blog</li>
+                                            <li className="submenu-mobile-item">Careers</li>
                                         </ul>
                                     )}
 
                                 </li>
-                                <li onClick={e => toggleSubMenu(e)}>
-                                    <span className="mobile-menu-item">
+                                <li 
+                                    className="mobile-menu-item"
+                                    onClick={e => toggleSubMenu(e)}
+                                    >
+                                    <span>
                                         Connect
                                         <FontAwesomeIcon 
                                             icon="chevron-down"
-                                            className="mobile-menu-chevron"/>
+                                            className="mobile-menu-chevron"
+                                            style={{
+                                                transform: connectOpen ? 'rotateX(180deg)' : ''
+                                            }}/>
                                     </span>
-                                    {!connectOpen ? null : (
+                                    {connectOpen && (
                                         <ul className="submenu-mobile">
-                                            <li>Contact</li>
-                                            <li>Newsletter</li>
-                                            <li>LinkedIn</li>
+                                            <li className="submenu-mobile-item">Contact</li>
+                                            <li className="submenu-mobile-item">Newsletter</li>
+                                            <li className="submenu-mobile-item">LinkedIn</li>
                                         </ul>
                                     )}
 
@@ -173,7 +218,7 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        ) : null }
+                    )}
         </Navigation>
     )
 
@@ -216,6 +261,7 @@ const Navigation = styled.nav`
                 &-icon {
                     margin-left: .5rem;
                     font-size: .8rem;
+                    transition: all .3s ease;
                 }
 
                 &:hover {
@@ -223,6 +269,27 @@ const Navigation = styled.nav`
                     text-decoration: underline;
                 }
             }
+
+            .submenu {
+                    background-color: #fff;
+                    color: var(--text-primary);
+                    list-style: none;
+                    text-align: left;
+                    padding: 1rem;
+                    position: absolute;
+                    border-radius: 6px;
+                    box-shadow: 0px 7px 15px 0px rgba(0,0,0,0.3);
+
+                    &-item {
+                        padding: .5rem;
+
+                        &:hover {
+                            cursor: pointer;
+                            color: var(--title-secondary);
+                            font-weight: 500;
+                        }
+                    }
+                }
         }
 
     }
@@ -268,18 +335,61 @@ const Navigation = styled.nav`
         background-color: #fff;
         height: fit-content;
         color: var(--title-primary);
-        text-align: center;
-        position: absolute;
+        font-size: 1.2rem;
         width: 85%;
+        position: relative;
+        max-width: 400px;
         margin: 4rem auto;
+        border-radius: 6px;
+        padding: 1rem;
+        box-shadow: 0px 7px 15px 0px rgba(0,0,0,0.3);
+        z-index: 10;
+
 
         &-list {
             list-style: none;
             padding: 1rem;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+            text-align: center;
+
         }
 
         &-item {
+            width: 100%;
+            padding: .25rem .5rem;
+            margin-bottom: 1rem;
+            
+            &:hover {
+                font-weight: 500;
+                filter: brightness(110%);
+                cursor: pointer;
+            }
 
+            .mobile-menu-chevron {
+                margin-left: 1rem;
+                color: var(--bg-gradient-red-2);
+                transition: all .3s ease;
+                font-size: .7rem;
+            }
+
+            .submenu-mobile {
+                list-style: none;
+                font-weight: 400;
+                padding: 1rem;
+                margin-top: 1rem;
+                background-color: #ddd;
+                color: var(--text-primary);
+                border-radius: 6px;
+
+                &-item {
+                    padding: .5rem 0;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
         }
 
         &-icon {
@@ -289,15 +399,52 @@ const Navigation = styled.nav`
             font-weight: 300;
             right: 2rem;
 
-            &.hamburger {
+            &:hover {
+                cursor: pointer;
+            }
+        }
 
+        .nav-cta-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+
+            .nav-cta-item {
+            display: block;
+            padding: .75rem 1.5rem;
+            border-radius: 50px;
+            margin-right: .25rem;
+            background-color: transparent;
+            color: var(--bg-dark);
+            font-size: 1.2rem;
+            
+            &:first-of-type {
+                margin-bottom: .5rem;
             }
 
-            &.close {
-
+            &:hover {
+                background-color: white;
+                color: var(--button-hover);
+                cursor: pointer;
+                border: 1px solid var(--button-hover);
             }
 
+            &.signup {
+                color: #fff;
+                background-image: linear-gradient(
+                        to right, 
+                        var(--bg-gradient-red-1),
+                        var(--bg-gradient-red-2));
 
+                &:hover {
+                    background-color: var(--button-hover);
+                    filter: brightness(110%);
+                    cursor: pointer;
+                }
+            }
+        }
         }
     }
 

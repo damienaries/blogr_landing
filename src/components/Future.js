@@ -47,6 +47,7 @@ export default function Future() {
 const StyledFuture = styled.section`
     width: 100%;
     position: relative;
+    z-index: -1;
 
     .future-title {
         position: absolute;
